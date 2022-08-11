@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(cors());
 
 let checkAuth = (req: Request, res: Response, next: NextFunction) => {
-  let token: string = null;
+  let token: any = null;
 
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
     token = req.headers.authorization.split(' ')[1];
