@@ -10,10 +10,6 @@ import { AlgorithmModel } from '../models/algorithm';
 const algoritm = new AlgorithmModel();
 
 router.get('/', (req: Request, res: Response) => {
-
-  console.log(algoritm.hashCidDB("1234567891234"))
-  console.log(algoritm.hashCidAPI("1234567891234"))
-
   res.send({ ok: true, message: 'Welcome to RESTful api server!', code: HttpStatus.OK });
 });
 
