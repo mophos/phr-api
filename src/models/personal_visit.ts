@@ -8,7 +8,7 @@ var objSchema = new Schema({
   hospcode: String,
   hospname: String,
   pid: String,
-pid_digit: String,
+  pid_digit: String,
   visit_no: String,
   source: String,
   created_date: { type: Date, default: Date.now }

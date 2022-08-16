@@ -5,6 +5,7 @@ import { Router, Request, Response } from 'express';
 import * as HttpStatus from 'http-status-codes';
 import PersonalInformation = require('../../models/personal_information');
 import PersonalInformationAddress = require('../../models/personal_information_address');
+import PersonalPid = require('../../models/personal_pid');
 import PersonalVisit = require('../../models/personal_visit');
 import PersonalVisitDiagnosis = require('../../models/personal_visit_diagnosis');
 import PersonalVisitDiagnosisInformation = require('../../models/personal_visit_diagnosis_information');
@@ -24,21 +25,38 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/info', async (req: Request, res: Response) => {
   try {
-    const pid = req.query.pid;
-    const info: any = await PersonalInformation.find({ pid: pid }, { _id: 0 });
-    const infoAddress: any = await PersonalInformationAddress.find({ pid: pid }, { _id: 0 });
-    const visit: any = await PersonalVisit.find({ pid: pid }, { _id: 0 });
-    const visitInfo: any = await PersonalVisitInformation.find({ pid: pid }, { _id: 0 });
-    const visitDiagnosis: any = await PersonalVisitDiagnosis.find({ pid: pid }, { _id: 0 });
-    const visitDiagnosisInfo: any = await PersonalVisitDiagnosisInformation.find({ pid: pid }, { _id: 0 });
-    const visitLab: any = await PersonalVisitLab.find({ pid: pid }, { _id: 0 });
-    const visitLabInfo: any = await PersonalVisitLabInformation.find({ pid: pid }, { _id: 0 });
-    const visitOrder: any = await PersonalVisitOrder.find({ pid: pid }, { _id: 0 });
-    const visitOrderInfo: any = await PersonalVisitOrderInformation.find({ pid: pid }, { _id: 0 });
+    //### PID ##########
+    const pid: any = req.query.pid;
+    const pidAPIHash: any = await PersonalPid.find({ pid_api: pid }, { _id: 0, pid: 1 });
+    const hashCidDB = await algoritm.hashCidDB(pidAPIHash[0].pid);
+    //##################
+    const info: any = await PersonalInformation.find({ pid: hashCidDB }, { _id: 0 });
+    const infoAddress: any = await PersonalInformationAddress.find({ pid: hashCidDB }, { _id: 0 });
+
+    const visit: any = await PersonalVisit.find({ pid: hashCidDB }, { _id: 0 });
+    const visitInfo: any = await PersonalVisitInformation.find({ pid: hashCidDB }, { _id: 0 });
+    const visitDiagnosis: any = await PersonalVisitDiagnosis.find({ pid: hashCidDB }, { _id: 0 });
+    const visitDiagnosisInfo: any = await PersonalVisitDiagnosisInformation.find({ pid: hashCidDB }, { _id: 0 });
+    const visitLab: any = await PersonalVisitLab.find({ pid: hashCidDB }, { _id: 0 });
+    const visitLabInfo: any = await PersonalVisitLabInformation.find({ pid: hashCidDB }, { _id: 0 });
+    const visitOrder: any = await PersonalVisitOrder.find({ pid: hashCidDB }, { _id: 0 });
+    const visitOrderInfo: any = await PersonalVisitOrderInformation.find({ pid: hashCidDB }, { _id: 0 });
+
     const obj: any = {};
-    obj.personal_infomation = info[0];
+    obj.personal_infomation = {
+      "birthday": await algoritm.deCryptAES(info[0].birthday),
+      "blood_group": info[0].blood_group,
+      "prename": info[0].prename,
+      "first_name": await algoritm.deCryptAES(info[0].first_name),
+      "middle_name": await algoritm.deCryptAES(info[0].middle_name),
+      "last_name": await algoritm.deCryptAES(info[0].last_name),
+      "home_phone": info[0].home_phone,
+      "phone_number": info[0].phone_number,
+      "nationality": info[0].nationality,
+      "source": info[0].source
+    }
     obj.personal_infomation_address = infoAddress;
     obj.personal_visit = visit
     obj.personal_visit_information = visitInfo
@@ -48,10 +66,13 @@ router.get('/', async (req: Request, res: Response) => {
     obj.personal_visit_lab_information = visitLabInfo
     obj.personal_visit_order = visitOrder
     obj.personal_visit_order_information = visitOrderInfo
+
     // console.log(rs);
 
     res.send({ ok: true, rows: obj });
   } catch (error) {
+    console.log(error);
+
     res.send({ ok: false, error: error });
   }
 });
