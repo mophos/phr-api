@@ -83,9 +83,8 @@ router.get('/pid-from-visit', async (req: Request, res: Response) => {
     const hospcode: any = req.query.hospcode;
     const hn: any = req.query.hn;
     const visit: any = await PersonalVisit.findOne({ hospcode: hospcode, hn: hn }, { _id: 0 });
-    console.log(visit.pid);
-    
     if (visit) {
+      console.log(visit.pid);
       res.status(200);
       res.send({ pid: await algoritm.enCryptAES(visit.pid, process.env.NIFI_AES_KEY,process.env.NIFI_AES_IV) });
     } else {
