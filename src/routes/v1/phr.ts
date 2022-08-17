@@ -77,6 +77,28 @@ router.get('/info', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/pid-from-visit', async (req: Request, res: Response) => {
+  try {
+    //### PID ##########
+    const hospcode: any = req.query.hospcode;
+    const hn: any = req.query.hn;
+    const visit: any = await PersonalVisit.findOne({ hospcode: hospcode, hn: hn }, { _id: 0 });
+    console.log(visit.pid);
+    
+    if (visit) {
+      res.status(200);
+      res.send({ pid: await algoritm.enCryptAES(visit.pid, process.env.NIFI_AES_KEY,process.env.NIFI_AES_IV) });
+    } else {
+      res.status(204);
+      res.send();
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500)
+    res.send({ ok: false, error: error });
+  }
+});
+
 
 
 export default router;
