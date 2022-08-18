@@ -27,3 +27,12 @@ open browser and go to http://localhost:3000
 ```
 pm2 start --interpreter ts-node src/bin/www.ts MyServerName
 ```
+
+```
+{
+  "app_id":"2708e84c-d776-45a6-8e75-dc76fec79e0e",
+  "name": "John Doe",
+  "iat": 1516239022,
+  "source": "TEST"
+}
+```
