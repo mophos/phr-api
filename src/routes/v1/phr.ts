@@ -86,7 +86,8 @@ router.get('/pid-from-visit', async (req: Request, res: Response) => {
     if (visit) {
       console.log(visit.pid);
       res.status(200);
-      res.send(algoritm.enCryptAES(visit.pid, process.env.NIFI_AES_KEY, process.env.NIFI_AES_IV));
+      res.send(visit.pid);
+      // res.send(algoritm.enCryptAES(visit.pid, process.env.NIFI_AES_KEY, process.env.NIFI_AES_IV));
     } else {
       res.status(204);
       res.send();
