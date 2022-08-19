@@ -21,7 +21,8 @@
     "moment": "^2.22.2",
     "mongoose": "^4.13.21",
     "morgan": "^1.9.0",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/body-parser": "1.17.0",

@@ -6,7 +6,8 @@ var objSchema = new Schema({
     app_id: String,
     name: String,
     key: String,
-    iv: String
+    iv: String,
+    is_actived: String
 }, { versionKey: '_id' });
 
 // model
