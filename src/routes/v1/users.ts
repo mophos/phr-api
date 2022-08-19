@@ -49,6 +49,32 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/token', async (req: Request, res: Response) => {
+  try {
+    const appId = req.decoded.app_id;
+    if (appId == 'a1443583-90e0-4020-b4ae-634098f09ab7') {
+      const rs = await Users.find({ name: req.query.name });
+
+      const payload: any = {
+        app_id: rs[0].app_id,
+        name: rs[0].name,
+        is_actived: true
+      }
+      const token = jwt.sign(payload);
+      res.send({ ok: true, token: token, key: rs[0].key, iv: rs[0].iv });
+    } else {
+      res.status(401);
+      res.send({ ok: false });
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.send({ ok: false });
+
+  }
+});
+
 function makeid(length) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

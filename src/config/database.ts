@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 if (process.env.NODE_ENV === "DEV") {
 
   var mongoDB = `mongodb://${process.env.MONGO_DEV_HOST}:${process.env.MONGO_DEV_PORT}/${process.env.MONGO_DEV_DBNAME}`;
-  mongoose.connect(mongoDB, {
+  mongoose.main = mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     bufferCommands: false,
     user: process.env.MONGO_DEV_USER,

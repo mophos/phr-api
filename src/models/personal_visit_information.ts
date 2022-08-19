@@ -28,6 +28,6 @@ pid_digit: String,
 // model
 // interface IUserModel extends  mongoose.Document { }
 
-var PersonalVisitInformation = mongoose.model("schemaPersonalVisitInformation", objSchema, 'personal_visit_information');
+var PersonalVisitInformation = mongoose.main.model("schemaPersonalVisitInformation", objSchema, 'personal_visit_information');
 
 export = PersonalVisitInformation;

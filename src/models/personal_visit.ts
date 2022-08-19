@@ -17,6 +17,6 @@ var objSchema = new Schema({
 // model
 // interface IUserModel extends  mongoose.Document { }
 
-var PersonalVisit = mongoose.model("schemaPersonalVisit", objSchema, 'personal_visit');
+var PersonalVisit = mongoose.main.model("schemaPersonalVisit", objSchema, 'personal_visit');
 
 export = PersonalVisit;

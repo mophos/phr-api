@@ -12,7 +12,6 @@ var objSchema = new Schema({
 
 // model
 // interface IUserModel extends  mongoose.Document { }
-
-var Users = mongoose.model("schemaUsers", objSchema, 'users');
+var Users = mongoose.user.model("schemaUsers", objSchema, 'users');
 
 export = Users;

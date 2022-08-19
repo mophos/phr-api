@@ -10,6 +10,6 @@ var objSchema = new Schema({
 // model
 // interface IUserModel extends  mongoose.Document { }
 
-var PersonalPid = mongoose.model("schemaPersonalPid", objSchema, 'personal_pid');
+var PersonalPid = mongoose.main.model("schemaPersonalPid", objSchema, 'personal_pid');
 
 export = PersonalPid;

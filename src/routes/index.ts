@@ -4,12 +4,22 @@ import * as HttpStatus from 'http-status-codes';
 
 const router: Router = Router();
 
-import User = require('../models/personal_information');
+import Users = require('../models/users');
 import { AlgorithmModel } from '../models/algorithm';
+import PersonalVisit = require('../models/personal_visit');
 
 const algoritm = new AlgorithmModel();
 
-router.get('/', (req: Request, res: Response) => {
+router.get('/', async(req: Request, res: Response) => {
+  // const rs0:any = await PersonalVisit.find({});
+  // const rs:any = await Users.find({});
+  // console.log(rs0[0]._doc);
+  // console.log(rs[0]._doc);
+  // const a = rs0[0]._doc;
+  // console.log(a);
+  
+  // console.log(rs);
+  
   res.send({ ok: true, message: 'Welcome to RESTful api server!', code: HttpStatus.OK });
 });
 

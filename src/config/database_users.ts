@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 
 
   var mongoDB = `mongodb://${process.env.MONGO_USER_HOST}:${process.env.MONGO_USER_PORT}/${process.env.MONGO_USER_DBNAME}`;
-  mongoose.createConnection(mongoDB, {
+  mongoose.user = mongoose.createConnection(mongoDB, {
     useNewUrlParser: true,
     bufferCommands: false,
     user: process.env.MONGO_USER_USER,

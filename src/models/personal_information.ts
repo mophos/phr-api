@@ -21,6 +21,6 @@ var userSchema = new Schema({
 // model
 // interface IUserModel extends  mongoose.Document { }
 
-var PersonalInformation = mongoose.model("schemaPersonalInformation", userSchema, 'personal_information');
+var PersonalInformation = mongoose.main.model("schemaPersonalInformation", userSchema, 'personal_information');
 
 export = PersonalInformation;
