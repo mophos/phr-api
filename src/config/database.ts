@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "DEV") {
   });
 
   // Get Mongoose to use the global promise library
-  (mongoose.main as any).Promise = global.Promise;
+  (mongoose as any).Promise = global.Promise;
   //Get the default connection
   var db = mongoose.connection;
 
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "DEV") {
 
 } else {
   var mongoDB = `mongodb://${process.env.MONGO_PROD_HOST}:${process.env.MONGO_PROD_PORT}/${process.env.MONGO_PROD_DBNAME}`;
-  mongoose.connect(mongoDB, {
+  mongoose.main =  mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     bufferCommands: false,
     user: process.env.MONGO_PROD_USER,
