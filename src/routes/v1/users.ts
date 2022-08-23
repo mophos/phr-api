@@ -60,7 +60,7 @@ router.get('/token', async (req: Request, res: Response) => {
         name: rs[0].name,
         is_actived: true
       }
-      const token = jwt.sign(payload);
+      const token = jwt.signNoExpire(payload);
       res.send({ ok: true, token: token, key: rs[0].key, iv: rs[0].iv });
     } else {
       res.status(401);

@@ -9,6 +9,11 @@ export class Jwt {
     });
     return token;
   }
+  
+  signNoExpire(playload: any) {
+    let token = jwt.sign(playload, this.secretKey);
+    return token;
+  }
 
   verify(token: string) {
     return new Promise((resolve, reject) => {
