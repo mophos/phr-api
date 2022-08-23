@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "DEV") {
   });
 
   // Get Mongoose to use the global promise library
-  (mongoose as any).Promise = global.Promise;
+  (mongoose.main as any).Promise = global.Promise;
   //Get the default connection
   var db = mongoose.connection;
 

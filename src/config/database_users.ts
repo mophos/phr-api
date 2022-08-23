@@ -10,7 +10,7 @@ import * as mongoose from "mongoose";
   });
 
   // Get Mongoose to use the global promise library
-  (mongoose as any).Promise = global.Promise;
+  (mongoose.user as any).Promise = global.Promise;
   //Get the default connection
   var db = mongoose.connection;
 
