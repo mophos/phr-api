@@ -20,7 +20,7 @@ router.post('/', async (req: Request, res: Response) => {
     if (appId == 'a1443583-90e0-4020-b4ae-634098f09ab7') {
       const app_id: any = uuid();
       const key = await makeid(32);
-      const iv = await makeid(32);
+      const iv = await makeid(16);
       const obj: any = {
         app_id: app_id,
         name: req.body.name,
