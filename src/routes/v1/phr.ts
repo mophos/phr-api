@@ -34,12 +34,12 @@ router.get('/info', async (req: Request, res: Response) => {
       //### PID ##########
       const pid: any = req.query.pid;
       const pidAPIHash: any = await PersonalPid.find({ pid_api: pid }, { _id: 0, pid: 1 });
-      if(pidAPIHash[0]){
+      if (pidAPIHash[0]) {
         const hashCidDB = await algoritm.hashCidDB(pidAPIHash[0].pid);
         //##################
         const info: any = await PersonalInformation.find({ pid: hashCidDB }, { _id: 0 });
         const infoAddress: any = await PersonalInformationAddress.find({ pid: hashCidDB }, { _id: 0 });
-  
+
         const visit: any = await PersonalVisit.find({ pid: hashCidDB }, { _id: 0 });
         const visitInfo: any = await PersonalVisitInformation.find({ pid: hashCidDB }, { _id: 0 });
         const visitDiagnosis: any = await PersonalVisitDiagnosis.find({ pid: hashCidDB }, { _id: 0 });
@@ -48,7 +48,7 @@ router.get('/info', async (req: Request, res: Response) => {
         const visitLabInfo: any = await PersonalVisitLabInformation.find({ pid: hashCidDB }, { _id: 0 });
         const visitOrder: any = await PersonalVisitOrder.find({ pid: hashCidDB }, { _id: 0 });
         const visitOrderInfo: any = await PersonalVisitOrderInformation.find({ pid: hashCidDB }, { _id: 0 });
-  
+
         const obj: any = {};
         obj.personal_infomation = {
           "birthday": await algoritm.deCryptAES(info[0].birthday),
@@ -71,13 +71,13 @@ router.get('/info', async (req: Request, res: Response) => {
         obj.personal_visit_lab_information = visitLabInfo
         obj.personal_visit_order = visitOrder
         obj.personal_visit_order_information = visitOrderInfo
-  
+
         // console.log(rs);
-  
+
         res.status(200)
         // res.send(obj);
-        res.send({ok:true,data:algoritm.enCryptAES(JSON.stringify(obj), process.env.NIFI_AES_KEY, process.env.NIFI_AES_IV)} );
-      } else{
+        res.send({ ok: true, data: algoritm.enCryptAES(JSON.stringify(obj), key[0].key, key[0].iv) });
+      } else {
         res.status(204)
         res.send();
 
