@@ -3,6 +3,7 @@
 import * as express from 'express';
 import { Router, Request, Response } from 'express';
 import * as HttpStatus from 'http-status-codes';
+import PersonalAppointment = require('../../models/personal_appointment');
 import PersonalInformation = require('../../models/personal_information');
 import PersonalInformationAddress = require('../../models/personal_information_address');
 import PersonalPid = require('../../models/personal_pid');
@@ -32,23 +33,44 @@ router.get('/info', async (req: Request, res: Response) => {
     const key: any = await Users.find({ app_id: appId });
     if (key) {
       //### PID ##########
+      console.time('pid')
       const pid: any = req.query.pid;
       const pidAPIHash: any = await PersonalPid.find({ pid_api: pid }, { _id: 0, pid: 1 });
       if (pidAPIHash[0]) {
         const hashCidDB = await algoritm.hashCidDB(pidAPIHash[0].pid);
+        console.timeEnd('pid')
         //##################
+        console.time('info')
         const info: any = await PersonalInformation.find({ pid: hashCidDB }, { _id: 0 });
+        console.timeEnd('info')
+        console.time('info_address')
         const infoAddress: any = await PersonalInformationAddress.find({ pid: hashCidDB }, { _id: 0 });
-
+        console.timeEnd('info_address')
+        console.time('visit')
         const visit: any = await PersonalVisit.find({ pid: hashCidDB }, { _id: 0 });
+        console.timeEnd('visit')
+        console.time('visit_info')
         const visitInfo: any = await PersonalVisitInformation.find({ pid: hashCidDB }, { _id: 0 });
+        console.timeEnd('visit_info')
+        console.time('visit_diag')
         const visitDiagnosis: any = await PersonalVisitDiagnosis.find({ pid: hashCidDB }, { _id: 0 });
+        console.timeEnd('visit_diag')
+        console.time('visit_diag_info')
         const visitDiagnosisInfo: any = await PersonalVisitDiagnosisInformation.find({ pid: hashCidDB }, { _id: 0 });
+        console.timeEnd('visit_diag_info')
+        console.time('visit_lab')
         const visitLab: any = await PersonalVisitLab.find({ pid: hashCidDB }, { _id: 0 });
+        console.timeEnd('visit_lab')
+        console.time('visit_labInfo')
         const visitLabInfo: any = await PersonalVisitLabInformation.find({ pid: hashCidDB }, { _id: 0 });
+        console.timeEnd('visit_labInfo')
+        console.time('visit_order')
         const visitOrder: any = await PersonalVisitOrder.find({ pid: hashCidDB }, { _id: 0 });
+        console.timeEnd('visit_order')
+        console.time('visit_order_info')
         const visitOrderInfo: any = await PersonalVisitOrderInformation.find({ pid: hashCidDB }, { _id: 0 });
-
+        console.timeEnd('visit_order_info')
+        const appointment: any = await PersonalAppointment.find({ pid: hashCidDB }, { _id: 0 });
         const obj: any = {};
         obj.personal_infomation = {
           "birthday": await algoritm.deCryptAES(info[0].birthday),
@@ -71,6 +93,7 @@ router.get('/info', async (req: Request, res: Response) => {
         obj.personal_visit_lab_information = visitLabInfo
         obj.personal_visit_order = visitOrder
         obj.personal_visit_order_information = visitOrderInfo
+        obj.personal_visit_appointment = appointment
 
         // console.log(rs);
 
