@@ -4,9 +4,9 @@ import * as express from 'express';
 import { Router, Request, Response } from 'express';
 import * as HttpStatus from 'http-status-codes';
 
-import Users = require('../../models/v1/users');
+import Users = require('../../models/users');
 import { AlgorithmModel } from '../../models/v1/algorithm';
-import { Jwt } from '../../models/v1/jwt';
+import { Jwt } from '../../models/jwt';
 const { uuid } = require('uuidv4');
 
 const algoritm = new AlgorithmModel();

@@ -1,4 +1,4 @@
-import { mongoose } from "../config/database";
+import { mongoose } from "../../config/database";
 import { Document, Schema } from "mongoose";
 
 // schema
@@ -17,6 +17,6 @@ var objSchema = new Schema({
 // model
 // interface IUserModel extends  mongoose.Document { }
 
-var PersonalVisit = mongoose.main.model("schemaPersonalVisit", objSchema, 'personal_visit');
+var Services = mongoose.main.model("schemaService", objSchema, 'services');
 
-export = PersonalVisit;
+export = Services;

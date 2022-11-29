@@ -1,4 +1,4 @@
-import { mongoose } from "../config/database";
+import { mongoose } from "../../config/database";
 import { Document, Schema } from "mongoose";
 
 // schema
@@ -11,15 +11,12 @@ var objSchema = new Schema({
   pid: String,
 pid_digit: String,
   source: String,
-  diagnosis_code: String,
-  diagnosis_result: String,
-  diagnosis_date: String,
   created_date: { type: Date, default: Date.now }
 }, { versionKey: '_id' });
 
 // model
 // interface IUserModel extends  mongoose.Document { }
 
-var PersonalVisitLabDiagnosisInformation = mongoose.main.model("schemaPersonalVisitLabDiagnosisInformation", objSchema, 'personal_visit_diagnosis_information');
+var PersonalVisitLabDiagnosis = mongoose.main.model("schemaPersonalVisitLabDiagnosis", objSchema, 'personal_visit_diagnosis');
 
-export = PersonalVisitLabDiagnosisInformation;
+export = PersonalVisitLabDiagnosis;

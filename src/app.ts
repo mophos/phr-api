@@ -13,12 +13,14 @@ import * as express from 'express';
 import * as cors from 'cors';
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { Jwt } from './models/jwt';
+import { Jwt } from './models/v1/jwt';
 
 import indexRoute from './routes/index';
 import loginRoute from './routes/login';
 import phrV1Route from './routes/v1/phr';
 import userV1Route from './routes/v1/users';
+
+import phrV1_1Route from './routes/v1_1/phr';
 
 // Assign router to the express.Router() instance
 const app: express.Application = express();
@@ -63,6 +65,8 @@ let checkAuth = (req: Request, res: Response, next: NextFunction) => {
       });
     });
 }
+
+app.use('/v1_1/', checkAuth, phrV1_1Route);
 
 app.use('/v1/', checkAuth, phrV1Route);
 app.use('/v1/users', checkAuth, userV1Route);

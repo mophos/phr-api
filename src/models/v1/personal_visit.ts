@@ -1,4 +1,4 @@
-import { mongoose } from "../config/database";
+import { mongoose } from "../../config/database";
 import { Document, Schema } from "mongoose";
 
 // schema
@@ -8,7 +8,7 @@ var objSchema = new Schema({
   hospcode: String,
   hospname: String,
   pid: String,
-pid_digit: String,
+  pid_digit: String,
   visit_no: String,
   source: String,
   created_date: { type: Date, default: Date.now }
@@ -17,6 +17,6 @@ pid_digit: String,
 // model
 // interface IUserModel extends  mongoose.Document { }
 
-var PersonalVisitOrder = mongoose.main.model("schemaPersonalVisitOrder", objSchema, 'personal_visit_order');
+var PersonalVisit = mongoose.main.model("schemaPersonalVisit", objSchema, 'personal_visit');
 
-export = PersonalVisitOrder;
+export = PersonalVisit;
