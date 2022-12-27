@@ -67,6 +67,7 @@ let checkAuth = (req: Request, res: Response, next: NextFunction) => {
 }
 
 app.use('/v1_1/', checkAuth, phrV1_1Route);
+app.use('/v1_1/users', checkAuth, userV1Route);
 
 app.use('/v1/', checkAuth, phrV1Route);
 app.use('/v1/users', checkAuth, userV1Route);
