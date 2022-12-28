@@ -23,15 +23,11 @@ var schemaPersonInfo = new Schema({
     "date_of_death": String,
     "cause_of_death": String,
     "place_of_death": String
-  }, "telephone": [
-    {
-      "no": String,
-      "type": String,
-      "ext": String
-    }
-  ],
+  },
+  "telephone": Array
+  ,
   "email": [
-    ""
+    String
   ],
   created_date: { type: Date, default: Date.now }
 }, { versionKey: '_id' });

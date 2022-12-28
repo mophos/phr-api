@@ -66,8 +66,11 @@ router.get('/info', async (req: Request, res: Response) => {
           data.services = service;
           res.status(200)
           // res.send(obj);
-          // res.send({ ok: true, data: data });
-          res.send({ ok: true, data: algoritm.enCryptAES(JSON.stringify(data), key[0].key, key[0].iv) });
+          if (process.env.NODE_ENV == 'DEV') {
+            res.send({ ok: true, data: data });
+          } else {
+            res.send({ ok: true, data: algoritm.enCryptAES(JSON.stringify(data), key[0].key, key[0].iv) });
+          }
         } else {
           res.status(204)
           res.send();
