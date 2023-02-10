@@ -3,7 +3,7 @@ import { Document, Schema } from "mongoose";
 
 // schema
 var objSchema = new Schema({
-  visit_date: String,
+  visit_date: Date,
   visit_time: String,
   hospcode: String,
   hospname: String,
