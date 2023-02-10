@@ -5,7 +5,8 @@ import { Document, Schema } from "mongoose";
 var schemaPersonInfo = new Schema({
   "health_id": String,
   "birthdate": String,
-  "gender": String,
+  "gender_code": String,
+  "gender_name": String,
   "rh_blood_group": String,
   "blood_group": String,
   "title_code": String,
