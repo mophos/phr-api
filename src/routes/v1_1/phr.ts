@@ -22,14 +22,13 @@ router.get('/', (req: Request, res: Response) => {
 router.get('/info', async (req: Request, res: Response) => {
   try {
     const appId = req.decoded.app_id;
+    console.log(appId);
     const key: any = await Users.find({ app_id: appId });
     if (key) {
       //### PID ##########
       const cid: any = req.query.cid;
       const cidAPIHash: any = await PersonThaiCitizenHash.find({ cid_hash: cid }, { _id: 0, cid: 1 });
-      console.log(cidAPIHash);
       if (cidAPIHash[0]) {
-
         const hashCidDB = await algoritm.hashCidDB(cidAPIHash[0].cid);
         const _healthId: any = await PersonThaiCitizen.find({ cid_hash: hashCidDB }, { _id: 0, health_id: 1 });
         const healthId = _healthId[0].health_id
