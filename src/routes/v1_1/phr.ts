@@ -27,6 +27,7 @@ router.get('/info', async (req: Request, res: Response) => {
       //### PID ##########
       const cid: any = req.query.cid;
       const cidAPIHash: any = await PersonThaiCitizenHash.find({ cid_hash: cid }, { _id: 0, cid: 1 });
+      console.log(cidAPIHash);
       if (cidAPIHash[0]) {
 
         const hashCidDB = await algoritm.hashCidDB(cidAPIHash[0].cid);
