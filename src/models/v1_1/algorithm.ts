@@ -5,7 +5,7 @@ const CryptoJS = require("crypto-js");
 export class AlgorithmModel {
   private secretKey = process.env.SECRET_KEY;
 
-  hashCidAPI(cid: string) {
+  hashCidAPI(cid: string) {   
     if (cid.length == 13) {
       const md5Hash1 = CryptoJS.MD5(cid);
       const md5Hash1String = md5Hash1.toString();

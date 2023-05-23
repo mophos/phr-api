@@ -13,11 +13,40 @@ const algoritm = new AlgorithmModel();
 const router: Router = Router();
 import Users = require('../../models/v1_1/users');
 import PersonThaiCitizen = require('../../models/v1_1/person_thai_citizen');
+const { v4 } = require('uuid');
 
 router.get('/', (req: Request, res: Response) => {
   res.send({ ok: true, message: 'Welcome to RESTful api server!', code: HttpStatus.OK });
 });
 
+router.get('/health_id', async (req: Request, res: Response) => {
+  try {
+    const appId = req.decoded.app_id;
+    const key: any = await Users.find({ app_id: appId });
+    if (key) {
+      const cid: any = req.query.cid;
+      const hashCidAPI: any = await algoritm.hashCidAPI(cid.toString());
+      const hashCidDB = await algoritm.hashCidDB(cid);
+      const _healthId: any = await PersonThaiCitizen.find({ cid_hash: hashCidDB }, { _id: 0, health_id: 1 });
+      if (_healthId.length) {
+        const healthId = _healthId[0].health_id
+        res.send({ ok: true, healthId: healthId });
+      } else {
+        const healthId = v4() ;
+        await PersonThaiCitizenHash.insertMany({ cid, cid_hash: hashCidAPI });
+        console.log(cid, hashCidAPI);
+        await PersonThaiCitizen.insertMany({ cid_hash: hashCidDB, health_id: healthId });
+        res.send({ ok: true, healthId: healthId });
+      }
+    } else {
+      res.status(401)
+      res.send({ ok: false, error: HttpStatus.UNAUTHORIZED });
+    }
+  } catch (error) {
+    console.log(error);
+    res.send({ ok: false, error: error });
+  }
+});
 
 router.get('/info', async (req: Request, res: Response) => {
   try {
