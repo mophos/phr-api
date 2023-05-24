@@ -9,7 +9,7 @@ import { AlgorithmModel } from '../models/v1/algorithm';
 const algoritm = new AlgorithmModel();
 
 router.get('/', async(req: Request, res: Response) => {
-  console.log(req);
+  console.log(req.body);
   
   // const rs0:any = await PersonalVisit.find({});
   // const rs:any = await Users.find({});
