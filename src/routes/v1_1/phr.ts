@@ -13,6 +13,7 @@ const algoritm = new AlgorithmModel();
 const router: Router = Router();
 import Users = require('../../models/v1_1/users');
 import PersonThaiCitizen = require('../../models/v1_1/person_thai_citizen');
+import PersonVitalSign = require('../../models/v1_1/person_vitalsign');
 const { v4 } = require('uuid');
 
 router.get('/', (req: Request, res: Response) => {
@@ -32,11 +33,36 @@ router.get('/health_id', async (req: Request, res: Response) => {
         const healthId = _healthId[0].health_id
         res.send({ ok: true, healthId: healthId });
       } else {
-        const healthId = v4() ;
+        const healthId = v4();
         await PersonThaiCitizenHash.insertMany({ cid, cid_hash: hashCidAPI });
         console.log(cid, hashCidAPI);
         await PersonThaiCitizen.insertMany({ cid_hash: hashCidDB, health_id: healthId });
         res.send({ ok: true, healthId: healthId });
+      }
+    } else {
+      res.status(401)
+      res.send({ ok: false, error: HttpStatus.UNAUTHORIZED });
+    }
+  } catch (error) {
+    console.log(error);
+    res.send({ ok: false, error: error });
+  }
+});
+
+router.get('/vitalsign', async (req: Request, res: Response) => {
+  try {
+    const appId = req.decoded.app_id;
+    const key: any = await Users.find({ app_id: appId });
+    if (key) {
+      const healthId: any = req.query.healthId;
+      const limit = req.query.limit || 0;
+      const rs: any = await PersonVitalSign.find({ 'health_id': healthId }, { _id: 0, created_date: 0 }).sort({ datetime: -1 }).limit(+limit);
+      if (rs.length) {
+        res.status(200)
+        res.send(rs);
+      } else {
+        res.status(204);
+        res.send();
       }
     } else {
       res.status(401)
