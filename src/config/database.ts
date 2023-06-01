@@ -7,7 +7,8 @@ if (process.env.NODE_ENV === "DEV") {
     useNewUrlParser: true,
     bufferCommands: false,
     user: process.env.MONGO_DEV_USER,
-    pass: process.env.MONGO_DEV_PASSWORD
+    pass: process.env.MONGO_DEV_PASSWORD,
+    auto_reconnect: true
   });
 
   // Get Mongoose to use the global promise library
@@ -24,7 +25,7 @@ if (process.env.NODE_ENV === "DEV") {
 
 } else {
   var mongoDB = `mongodb://${process.env.MONGO_PROD_HOST}:${process.env.MONGO_PROD_PORT}/${process.env.MONGO_PROD_DBNAME}`;
-  mongoose.main =  mongoose.connect(mongoDB, {
+  mongoose.main = mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     bufferCommands: false,
     user: process.env.MONGO_PROD_USER,

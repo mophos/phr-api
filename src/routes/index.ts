@@ -9,6 +9,7 @@ import { AlgorithmModel } from '../models/v1/algorithm';
 const algoritm = new AlgorithmModel();
 
 router.get('/', async(req: Request, res: Response) => {
+  console.log(req.query); 
   console.log(req.body); 
   res.send({ ok: true, message: 'Welcome to RESTful api server!', code: HttpStatus.OK });
 });
