@@ -39,6 +39,6 @@
     "@types/serve-favicon": "^2.2.30",
     "nodemon": "^1.18.1",
     "ts-node": "^7.0.0",
-    "typescript": "^3.5.3"
+    "typescript": "^5.0.4"
   }
 }

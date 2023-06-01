@@ -6,9 +6,12 @@
     "removeComments": true,
     "sourceMap": true,
     "rootDir": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "lib": [
+      "esnext.asynciterable"
+    ],
   },
-  "exclude":[
+  "exclude": [
     "node_modules"
   ]
 }
