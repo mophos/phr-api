@@ -46,22 +46,13 @@ app.use(cors());
 
 
 const knex = require('knex')({
-  client: 'mysql2',
+  client: 'pg',
   connection: {
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT,
-    user: process.env.MYSQL_USERNAME,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DBNAME
-  },
-  pool: {
-    min: 0,
-    max: 100,
-    afterCreate: (conn, done) => {
-      conn.query('SET NAMES utf8', (err) => {
-        done(err, conn);
-      });
-    }
+    host: process.env.PG_HOST,
+    port: process.env.PG_PORT,
+    user: process.env.PG_USERNAME,
+    password: process.env.PG_PASSWORD,
+    database: process.env.PG_DBNAME
   },
   debugger: false
 });
