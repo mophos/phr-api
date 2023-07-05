@@ -26,7 +26,7 @@ export class ThaidModel {
 
   getBloodPressure(db: Knex, cid, limit: number = 0) {
     const sql = db('blood_pressure')
-      .select('hospname', 'date_serv', 'sbp', 'dbp')
+      .select('hospname', 'date_serv', 'sbp', 'dbp','history')
       .where('cid', cid)
     if (limit) {
       sql.limit(limit)
@@ -36,7 +36,27 @@ export class ThaidModel {
   
   getDiabetes(db: Knex, cid, limit: number = 0) {
     const sql = db('diabetes')
-      .select('hospname', 'date_serv', 'bs')
+      .select('hospname', 'date_serv', 'bs','history')
+      .where('cid', cid)
+    if (limit) {
+      sql.limit(limit)
+    }
+    return sql;
+  }
+  
+  getDrugAllergy(db: Knex, cid, limit: number = 0) {
+    const sql = db('drug_allergy')
+      .select('drug_name')
+      .where('cid', cid)
+    if (limit) {
+      sql.limit(limit)
+    }
+    return sql;
+  }
+  
+  getHospitalVisit(db: Knex, cid, limit: number = 0) {
+    const sql = db('hospital_visit')
+      .select('history')
       .where('cid', cid)
     if (limit) {
       sql.limit(limit)
