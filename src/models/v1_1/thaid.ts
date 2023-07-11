@@ -26,24 +26,24 @@ export class ThaidModel {
 
   getBloodPressure(db: Knex, cid, limit: number = 0) {
     const sql = db('blood_pressure')
-      .select('hospname', 'date_serv', 'sbp', 'dbp','history')
+      .select('hospname', 'date_serv', 'history')
       .where('cid', cid)
     if (limit) {
       sql.limit(limit)
     }
     return sql;
   }
-  
+
   getDiabetes(db: Knex, cid, limit: number = 0) {
     const sql = db('diabetes')
-      .select('hospname', 'date_serv', 'bs','history')
+      .select('hospname', 'date_serv', 'history')
       .where('cid', cid)
     if (limit) {
       sql.limit(limit)
     }
     return sql;
   }
-  
+
   getDrugAllergy(db: Knex, cid, limit: number = 0) {
     const sql = db('drug_allergy')
       .select('drug_name')
@@ -53,7 +53,7 @@ export class ThaidModel {
     }
     return sql;
   }
-  
+
   getHospitalVisit(db: Knex, cid, limit: number = 0) {
     const sql = db('hospital_visit')
       .select('history')
