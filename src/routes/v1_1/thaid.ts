@@ -19,10 +19,10 @@ router.get('/blood_pressure', async (req: Request, res: Response) => {
     const limit = req.query.limit || 0;
     const rs: any = await thaidModel.getBloodPressure(db, req.decoded.sub, +limit);
     if (rs.length) {
-      if (rs.history) {
-        rs.history = JSON.parse(rs.history);
+      if (rs[0].history) {
+        rs[0].history = JSON.parse(rs[0].history);
       }
-      res.send({ ok: true, rows: rs });
+      res.send({ ok: true, rows: rs[0] });
     } else {
       res.status(204);
       res.send({ ok: true })
@@ -40,10 +40,10 @@ router.get('/diabetes', async (req: Request, res: Response) => {
     const limit = req.query.limit || 0;
     const rs: any = await thaidModel.getDiabetes(db, req.decoded.sub, +limit);
     if (rs.length) {
-      if (rs.history) {
-        rs.history = JSON.parse(rs.history);
+      if (rs[0].history) {
+        rs[0].history = JSON.parse(rs[0].history);
       }
-      res.send({ ok: true, rows: rs });
+      res.send({ ok: true, rows: rs[0] });
     } else {
       res.status(204);
       res.send({ ok: true })
@@ -60,10 +60,10 @@ router.get('/drug_allergy', async (req: Request, res: Response) => {
     const limit = req.query.limit || 0;
     const rs: any = await thaidModel.getDrugAllergy(db, req.decoded.sub, +limit);
     if (rs.length) {
-      if (rs.drug_name) {
-        rs.drug_name = JSON.parse(rs.drug_name);
+      if (rs[0].drug_name) {
+        rs[0].drug_name = JSON.parse(rs[0].drug_name);
       }
-      res.send({ ok: true, rows: rs });
+      res.send({ ok: true, rows: rs[0] });
     } else {
       res.status(204);
       res.send({ ok: true })
@@ -80,10 +80,10 @@ router.get('/hospital_visit', async (req: Request, res: Response) => {
     const limit = req.query.limit || 0;
     const rs: any = await thaidModel.getHospitalVisit(db, req.decoded.sub, +limit);
     if (rs.length) {
-      if (rs.history) {
-        rs.history = JSON.parse(rs.history);
+      if (rs[0].history) {
+        rs[0].history = JSON.parse(rs[0].history);
       }
-      res.send({ ok: true, rows: rs });
+      res.send({ ok: true, rows: rs[0] });
     } else {
       res.status(204);
       res.send({ ok: true })
@@ -93,5 +93,9 @@ router.get('/hospital_visit', async (req: Request, res: Response) => {
     res.send({ ok: false, error: error });
   }
 });
+
+function stripSlashes(value: string) {
+  return value.replace(/\\(.)/mg, "$1");
+}
 
 export default router;
