@@ -20,7 +20,10 @@ router.get('/blood_pressure', async (req: Request, res: Response) => {
     const rs: any = await thaidModel.getBloodPressure(db, req.decoded.sub, +limit);
     if (rs.length) {
       if (rs[0].history) {
-        rs[0].history = JSON.parse(rs[0].history);
+        res.send({ ok: true, rows: JSON.parse(rs[0].history) });
+      } else {
+        res.status(204);
+        res.send({ ok: true })
       }
       res.send({ ok: true, rows: rs[0] });
     } else {
@@ -41,9 +44,11 @@ router.get('/diabetes', async (req: Request, res: Response) => {
     const rs: any = await thaidModel.getDiabetes(db, req.decoded.sub, +limit);
     if (rs.length) {
       if (rs[0].history) {
-        rs[0].history = JSON.parse(rs[0].history);
+        res.send({ ok: true, rows: JSON.parse(rs[0].history) });
+      } else {
+        res.status(204);
+        res.send({ ok: true })
       }
-      res.send({ ok: true, rows: rs[0] });
     } else {
       res.status(204);
       res.send({ ok: true })
@@ -61,9 +66,11 @@ router.get('/drug_allergy', async (req: Request, res: Response) => {
     const rs: any = await thaidModel.getDrugAllergy(db, req.decoded.sub, +limit);
     if (rs.length) {
       if (rs[0].drug_name) {
-        rs[0].drug_name = JSON.parse(rs[0].drug_name);
+        res.send({ ok: true, rows: JSON.parse(rs[0].drug_name) });
+      } else {
+        res.status(204);
+        res.send({ ok: true })
       }
-      res.send({ ok: true, rows: rs[0] });
     } else {
       res.status(204);
       res.send({ ok: true })
@@ -81,9 +88,11 @@ router.get('/hospital_visit', async (req: Request, res: Response) => {
     const rs: any = await thaidModel.getHospitalVisit(db, req.decoded.sub, +limit);
     if (rs.length) {
       if (rs[0].history) {
-        rs[0].history = JSON.parse(rs[0].history);
+        res.send({ ok: true, rows: JSON.parse(rs[0].history) });
+      } else {
+        res.status(204);
+        res.send({ ok: true })
       }
-      res.send({ ok: true, rows: rs[0] });
     } else {
       res.status(204);
       res.send({ ok: true })
