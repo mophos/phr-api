@@ -23,12 +23,15 @@ import userV1Route from './routes/v1/users';
 
 import phrV1_1Route from './routes/v1_1/phr';
 import thaidV1_1Route from './routes/v1_1/thaid';
+import h4uV1_1Route from './routes/v1_1/h4u';
+import { H4uModel } from './models/v1_1/h4u';
 
 // Assign router to the express.Router() instance
 const app: express.Application = express();
 
 const jwt = new Jwt();
 const thaidModel = new ThaidModel();
+const h4uModel = new H4uModel();
 //view engine setup
 app.set('views', path.join(__dirname, '../views'));
 app.engine('.ejs', ejs.renderFile);
@@ -120,6 +123,40 @@ let checkAuthThaiD = async (req: Request, res: Response, next: NextFunction) => 
   }
 }
 
+let checkAuthH4u = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      const token = req.headers.authorization.split(' ')[1];
+      const rs: any = await h4uModel.tokenIntrospect(token);
+      if (rs.is_verified) {
+        req.decoded = rs;
+        next();
+      } else {
+        console.log('actived false');
+        return res.send({
+          ok: false,
+          error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+          code: HttpStatus.UNAUTHORIZED
+        });
+      }
+    } else {
+      return res.send({
+        ok: false,
+        error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+        code: HttpStatus.UNAUTHORIZED
+      });
+    }
+
+  } catch (error) {
+    return res.send({
+      ok: false,
+      error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+      code: HttpStatus.UNAUTHORIZED
+    });
+  }
+}
+
+app.use('/v1_1/h4u', checkAuthH4u, h4uV1_1Route);
 app.use('/v1_1/thaid', checkAuthThaiD, thaidV1_1Route);
 app.use('/v1_1/users', checkAuth, userV1Route);
 app.use('/v1_1/', checkAuth, phrV1_1Route);
