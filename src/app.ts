@@ -128,6 +128,7 @@ let checkAuthH4u = async (req: Request, res: Response, next: NextFunction) => {
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
       const token = req.headers.authorization.split(' ')[1];
       const rs: any = await h4uModel.tokenIntrospect(token);
+      console.log(rs);
       if (rs.is_verified) {
         req.decoded = rs;
         next();
