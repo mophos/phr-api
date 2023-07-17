@@ -6,7 +6,7 @@ export class H4uModel {
   tokenIntrospect(token: any) {
     var options = {
       method: 'GET',
-      url: 'https://h4u-auth.moph.go.th/members/api/v1/m/user/is_verified',
+      url: 'https://h4u-auth.moph.go.th/members/api/v1/m/user',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Bearer ${token}`
