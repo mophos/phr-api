@@ -77,69 +77,32 @@ router.get('/vitalsign', async (req: Request, res: Response) => {
 router.get('/info', async (req: Request, res: Response) => {
   try {
     const appId = req.decoded.app_id;
-    console.log(appId);
     const key: any = await Users.find({ app_id: appId });
     if (key) {
       //### PID ##########
       const cid: any = req.query.cid;
-      const cidAPIHash: any = await PersonThaiCitizenHash.find({ cid_hash: cid }, { _id: 0, cid: 1 });
-      if (cidAPIHash[0]) {
-        const hashCidDB = await algoritm.hashCidDB(cidAPIHash[0].cid);
-        const _healthId: any = await PersonThaiCitizen.find({ cid_hash: hashCidDB }, { _id: 0, health_id: 1 });
-        const healthId = _healthId[0].health_id
-        console.log(hashCidDB, healthId);
-
-        //##################
-        console.time('info')
-        const info: any = await PersonInfo.find({ health_id: healthId }, { _id: 0 });
-        const service: any = await Services.find({ health_id: healthId }, { _id: 0 });
-        console.timeEnd('info')
-        if (info.length) {
-          const profile: any = {
-            "birthdate": await algoritm.deCryptAES(info[0].birthdate),
-            "gender_code": info[0].gender_code,
-            "gender_name": info[0].gender_name,
-            "rh_blood_group": info[0].rh_blood_group,
-            "blood_group": info[0].blood_group,
-            "title_code": info[0].title_code,
-            "title_name": info[0].title_name,
-            "first_name": await algoritm.deCryptAES(info[0].first_name),
-            "middle_name": await algoritm.deCryptAES(info[0].middle_name),
-            "last_name": await algoritm.deCryptAES(info[0].last_name),
-            "nationality_code": info[0].nationality_code,
-            "nationality_name": info[0].nationality_name,
-            "marital_status_code": info[0].marital_status_code,
-            "marital_status_name": info[0].marital_status_name,
-            "viability_code": info[0].viability_code,
-            "viability_name": info[0].viability_name,
-            "death": info[0].death,
-            "telephone": info[0].telephone,
-            "email": info[0].email,
-          };
-          const data: any = {};
-          data.profile = profile;
-          data.services = service;
-          res.status(200)
-          // res.send(obj);
-          if (process.env.NODE_ENV == 'DEV') {
-            res.send({ ok: true, data: data });
-          } else {
-            res.send({ ok: true, data: algoritm.enCryptAES(JSON.stringify(data), key[0].key, key[0].iv) });
-          }
+      if (typeof cid == 'string') {
+        const rs: any = await getInfo(key, cid)
+        if (rs) {
+          res.send({ ok: true, rows: rs });
         } else {
-          res.status(204)
+          res.status(204);
           res.send();
         }
-
-
       } else {
-        res.status(204)
-        res.send();
-
+        const data = [];
+        for (const c of cid) {
+          const rs: any = await getInfo(key, c);
+          data.push(rs)
+        }
+        if (data.length) {
+          res.send({ ok: true, rows: data });
+        } else {
+          res.status(204);
+          res.send();
+        }
       }
-    } else {
-      res.status(401)
-      res.send({ ok: false, error: HttpStatus.UNAUTHORIZED });
+
     }
   } catch (error) {
     console.log(error);
@@ -147,6 +110,57 @@ router.get('/info', async (req: Request, res: Response) => {
     res.send({ ok: false, error: error });
   }
 });
+
+async function getInfo(key, cid) {
+  const cidAPIHash: any = await PersonThaiCitizenHash.find({ cid_hash: cid }, { _id: 0, cid: 1 });
+  if (cidAPIHash[0]) {
+    const hashCidDB = await algoritm.hashCidDB(cidAPIHash[0].cid);
+    const _healthId: any = await PersonThaiCitizen.find({ cid_hash: hashCidDB }, { _id: 0, health_id: 1 });
+    const healthId = _healthId[0].health_id
+    //##################
+    console.time('info')
+    const info: any = await PersonInfo.find({ health_id: healthId }, { _id: 0 });
+    const service: any = await Services.find({ health_id: healthId }, { _id: 0 });
+    console.timeEnd('info')
+    if (info.length) {
+      const profile: any = {
+        "birthdate": await algoritm.deCryptAES(info[0].birthdate),
+        "gender_code": info[0].gender_code,
+        "gender_name": info[0].gender_name,
+        "rh_blood_group": info[0].rh_blood_group,
+        "blood_group": info[0].blood_group,
+        "title_code": info[0].title_code,
+        "title_name": info[0].title_name,
+        "first_name": await algoritm.deCryptAES(info[0].first_name),
+        "middle_name": await algoritm.deCryptAES(info[0].middle_name),
+        "last_name": await algoritm.deCryptAES(info[0].last_name),
+        "nationality_code": info[0].nationality_code,
+        "nationality_name": info[0].nationality_name,
+        "marital_status_code": info[0].marital_status_code,
+        "marital_status_name": info[0].marital_status_name,
+        "viability_code": info[0].viability_code,
+        "viability_name": info[0].viability_name,
+        "death": info[0].death,
+        "telephone": info[0].telephone,
+        "email": info[0].email,
+      };
+      const data: any = {};
+      data.profile = profile;
+      data.services = service;
+
+
+      if (process.env.NODE_ENV == 'DEV') {
+        return data;
+      } else {
+        return algoritm.enCryptAES(JSON.stringify(data), key[0].key, key[0].iv)
+      }
+    } else {
+      return null
+    }
+  } else {
+    return null;
+  }
+}
 
 
 
