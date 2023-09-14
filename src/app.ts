@@ -25,13 +25,17 @@ import phrV1_1Route from './routes/v1_1/phr';
 import thaidV1_1Route from './routes/v1_1/thaid';
 import h4uV1_1Route from './routes/v1_1/h4u';
 import { H4uModel } from './models/v1_1/h4u';
+import { DgaModel } from './models/v1_1/dga'
 
 // Assign router to the express.Router() instance
 const app: express.Application = express();
 
-const jwt = new Jwt();
+const jwtModel = new Jwt();
+const jwt = require('jsonwebtoken');
 const thaidModel = new ThaidModel();
 const h4uModel = new H4uModel();
+const dgaModel = new DgaModel();
+const crypto = require('crypto');
 //view engine setup
 app.set('views', path.join(__dirname, '../views'));
 app.engine('.ejs', ejs.renderFile);
@@ -76,7 +80,7 @@ let checkAuth = (req: Request, res: Response, next: NextFunction) => {
     token = req.body.token;
   }
 
-  jwt.verify(token)
+  jwtModel.verify(token)
     .then((decoded: any) => {
       req.decoded = decoded;
       next();
@@ -99,7 +103,7 @@ let checkAuthThaiD = async (req: Request, res: Response, next: NextFunction) => 
         next();
       } else {
         console.log('actived false');
-        
+
         return res.send({
           ok: false,
           error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
@@ -157,8 +161,89 @@ let checkAuthH4u = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+let checkAuthDga = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const allowedIssuers = [
+      'https://connect.dga.or.th'
+    ];
+    const cid: string = req.query.cid.toString();
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      if (cid) {
+        const token = req.headers.authorization.split(' ')[1];
+        const dec = jwt.decode(token);
+        var hmac = crypto.createHmac('sha256', dec.dga_nonce);
+        const dataC = hmac.update(cid);
+        const ghmac = dataC.digest('hex');
+
+        if (ghmac == dec.consent) {
+          if (!allowedIssuers.includes(dec.iss)) {
+            res.status(401);
+            return res.send({
+              ok: false,
+              error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+              code: HttpStatus.UNAUTHORIZED
+            });
+          } else {
+            const jwksUri: any = await dgaModel.callJwk();
+            const key = await dgaModel.getKey(jwksUri.jwks_uri);
+            try {
+              var decoded = jwt.verify(token, key);
+              decoded.sub = req.query.cid;
+              req.decoded = decoded;
+              next();
+            } catch (err) {
+              console.log(err);
+              res.status(401);
+              return res.send({
+                ok: false,
+                error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+                code: HttpStatus.UNAUTHORIZED
+              });
+            }
+          }
+        } else {
+          console.log('cid_hash : something went wrong!');
+          res.status(401);
+          return res.send({
+            ok: false,
+            error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+            code: HttpStatus.UNAUTHORIZED
+          });
+        }
+      } else {
+        console.log('no cid');
+        res.status(401);
+        return res.send({
+          ok: false,
+          error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+          code: HttpStatus.UNAUTHORIZED
+        });
+      }
+    } else {
+      console.log('no token');
+      res.status(401);
+      return res.send({
+        ok: false,
+        error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+        code: HttpStatus.UNAUTHORIZED
+      });
+    }
+
+  } catch (error) {
+    console.log('catch2');
+    console.log(error);
+    res.status(401);
+    return res.send({
+      ok: false,
+      error: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+      code: HttpStatus.UNAUTHORIZED
+    });
+  }
+}
+
 app.use('/v1_1/h4u', checkAuthH4u, h4uV1_1Route);
 app.use('/v1_1/thaid', checkAuthThaiD, thaidV1_1Route);
+app.use('/v1_1/dga', checkAuthDga, thaidV1_1Route);
 app.use('/v1_1/users', checkAuth, userV1Route);
 app.use('/v1_1/', checkAuth, phrV1_1Route);
 
