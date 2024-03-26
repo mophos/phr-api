@@ -24,6 +24,7 @@ import userV1Route from './routes/v1/users';
 import phrV1_1Route from './routes/v1_1/phr';
 import thaidV1_1Route from './routes/v1_1/thaid';
 import h4uV1_1Route from './routes/v1_1/h4u';
+import drugStoreV1_1Route from './routes/v1_1/drug_store';
 import { H4uModel } from './models/v1_1/h4u';
 import { DgaModel } from './models/v1_1/dga'
 
@@ -245,6 +246,7 @@ app.use('/v1_1/h4u', checkAuthH4u, h4uV1_1Route);
 app.use('/v1_1/thaid', checkAuthThaiD, thaidV1_1Route);
 app.use('/v1_1/dga', checkAuthDga, thaidV1_1Route);
 app.use('/v1_1/users', checkAuth, userV1Route);
+app.use('/v1_1/drugstore', checkAuth, drugStoreV1_1Route);
 app.use('/v1_1/', checkAuth, phrV1_1Route);
 
 app.use('/v1/', checkAuth, phrV1Route);
