@@ -63,61 +63,61 @@ async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
   // console.log(info);
 
   if (info.length) {
-    if (process.env.NODE_ENV == 'DEV') {
-      const data = [];
-      for (const i of info) {
-        const locationInfo = {
-          "ENTREPRENEUR_IDENTIFY": i.LOCATION_INFO.ENTREPRENEUR_IDENTIFY,
-          "ENTREPRENEUR_NAME": i.LOCATION_INFO.ENTREPRENEUR_NAME,
-          "LOCATION_LICENSE": i.LOCATION_INFO.LOCATION_LICENSE,
-          "LOCATION_NAME": i.LOCATION_INFO.LOCATION_NAME,
-          "LOCATION_FULL_ADDR": i.LOCATION_INFO.LOCATION_FULL_ADDR,
-          "ADDR_NO": i.LOCATION_INFO.ADDR_NO,
-          "PROVINCE": i.LOCATION_INFO.PROVINCE,
-          "DISTRICT": i.LOCATION_INFO.DISTRICT,
-          "SubDISTRICT": i.LOCATION_INFO.SubDISTRICT,
-          "ZIPCODE": i.LOCATION_INFO.ZIPCODE,
-          "LATITUDE": i.LOCATION_INFO.LATITUDE,
-          "LONGTITUDE": i.LOCATION_INFO.LONGTITUDE,
-          "PROCESS_ID": i.LOCATION_INFO.PROCESS_ID,
-          "TEL": i.LOCATION_INFO.TEL,
-          "EMAIL": i.LOCATION_INFO.EMAIL,
-          "HCODE": i.LOCATION_INFO.HCODE,
-          "LOCATION_JOB_TIME": i.LOCATION_INFO.LOCATION_JOB_TIME,
-          "DATA_LINKGATE": {
-            "alleyCode": i.LOCATION_INFO.DATA_LINKGATE.alleyCode,
-            "alleyDesc": i.LOCATION_INFO.DATA_LINKGATE.alleyDesc,
-            "alleyWayCode": i.LOCATION_INFO.DATA_LINKGATE.alleyWayCode,
-            "alleyWayDesc": i.LOCATION_INFO.DATA_LINKGATE.alleyWayDesc,
-            "districtCode": i.LOCATION_INFO.DATA_LINKGATE.districtCode,
-            "districtDesc": i.LOCATION_INFO.DATA_LINKGATE.districtDesc,
-            "houseID": i.LOCATION_INFO.DATA_LINKGATE.houseID,
-            "houseNo": i.LOCATION_INFO.DATA_LINKGATE.houseNo,
-            "provinceCode": i.LOCATION_INFO.DATA_LINKGATE.provinceCode,
-            "provinceDesc": i.LOCATION_INFO.DATA_LINKGATE.provinceDesc,
-            "roadCode": i.LOCATION_INFO.DATA_LINKGATE.roadCode,
-            "roadDesc": i.LOCATION_INFO.DATA_LINKGATE.roadDesc,
-            "subdistrictCode": i.LOCATION_INFO.DATA_LINKGATE.subdistrictCode,
-            "subdistrictDesc": i.LOCATION_INFO.DATA_LINKGATE.subdistrictDesc,
-            "villageNo": i.LOCATION_INFO.DATA_LINKGATE.villageNo,
-          }
-        };
-        const locationBsn = [];
-        for (const b of i.LOCATION_BSN) {
-          locationBsn.push({
-            "CTZNO_OPERATOR": b.CTZNO_OPERATOR,
-            "OPERATOR_NAME": b.OPERATOR_NAME
-          })
-
+    const data = [];
+    for (const i of info) {
+      const locationInfo = {
+        "ENTREPRENEUR_IDENTIFY": i.LOCATION_INFO.ENTREPRENEUR_IDENTIFY,
+        "ENTREPRENEUR_NAME": i.LOCATION_INFO.ENTREPRENEUR_NAME,
+        "LOCATION_LICENSE": i.LOCATION_INFO.LOCATION_LICENSE,
+        "LOCATION_NAME": i.LOCATION_INFO.LOCATION_NAME,
+        "LOCATION_FULL_ADDR": i.LOCATION_INFO.LOCATION_FULL_ADDR,
+        "ADDR_NO": i.LOCATION_INFO.ADDR_NO,
+        "PROVINCE": i.LOCATION_INFO.PROVINCE,
+        "DISTRICT": i.LOCATION_INFO.DISTRICT,
+        "SubDISTRICT": i.LOCATION_INFO.SubDISTRICT,
+        "ZIPCODE": i.LOCATION_INFO.ZIPCODE,
+        "LATITUDE": i.LOCATION_INFO.LATITUDE,
+        "LONGTITUDE": i.LOCATION_INFO.LONGTITUDE,
+        "PROCESS_ID": i.LOCATION_INFO.PROCESS_ID,
+        "TEL": i.LOCATION_INFO.TEL,
+        "EMAIL": i.LOCATION_INFO.EMAIL,
+        "HCODE": i.LOCATION_INFO.HCODE,
+        "LOCATION_JOB_TIME": i.LOCATION_INFO.LOCATION_JOB_TIME,
+        "DATA_LINKGATE": {
+          "alleyCode": i.LOCATION_INFO.DATA_LINKGATE.alleyCode,
+          "alleyDesc": i.LOCATION_INFO.DATA_LINKGATE.alleyDesc,
+          "alleyWayCode": i.LOCATION_INFO.DATA_LINKGATE.alleyWayCode,
+          "alleyWayDesc": i.LOCATION_INFO.DATA_LINKGATE.alleyWayDesc,
+          "districtCode": i.LOCATION_INFO.DATA_LINKGATE.districtCode,
+          "districtDesc": i.LOCATION_INFO.DATA_LINKGATE.districtDesc,
+          "houseID": i.LOCATION_INFO.DATA_LINKGATE.houseID,
+          "houseNo": i.LOCATION_INFO.DATA_LINKGATE.houseNo,
+          "provinceCode": i.LOCATION_INFO.DATA_LINKGATE.provinceCode,
+          "provinceDesc": i.LOCATION_INFO.DATA_LINKGATE.provinceDesc,
+          "roadCode": i.LOCATION_INFO.DATA_LINKGATE.roadCode,
+          "roadDesc": i.LOCATION_INFO.DATA_LINKGATE.roadDesc,
+          "subdistrictCode": i.LOCATION_INFO.DATA_LINKGATE.subdistrictCode,
+          "subdistrictDesc": i.LOCATION_INFO.DATA_LINKGATE.subdistrictDesc,
+          "villageNo": i.LOCATION_INFO.DATA_LINKGATE.villageNo,
         }
-        data.push({
-          LOCATION_INFO: locationInfo,
-          LOCATION_BSN: locationBsn
+      };
+      const locationBsn = [];
+      for (const b of i.LOCATION_BSN) {
+        locationBsn.push({
+          "CTZNO_OPERATOR": b.CTZNO_OPERATOR,
+          "OPERATOR_NAME": b.OPERATOR_NAME
         })
+
       }
+      data.push({
+        LOCATION_INFO: locationInfo,
+        LOCATION_BSN: locationBsn
+      })
+    }
+    if (process.env.NODE_ENV == 'DEV') {
       return data;
     } else {
-      return algoritm.enCryptAES(JSON.stringify(info), key[0].key, key[0].iv)
+      return algoritm.enCryptAES(JSON.stringify(data), key[0].key, key[0].iv)
     }
   } else {
     return null
