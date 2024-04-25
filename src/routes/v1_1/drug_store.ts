@@ -51,7 +51,7 @@ router.get('/', async (req: Request, res: Response) => {
 async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
   // const info: any = await Drugstore.find({ 'LOCATION_INFO.PVCODE': "65" }, { _id: 0 });
   let info: any;
-  if (ENTREPRENEUR_IDENTIFY.length && CTZNO_OPERATOR.length) {
+  if (ENTREPRENEUR_IDENTIFY.length && CTZNO_OPERATOR.length) {    
     info = await Drugstore.find({ 'LOCATION_INFO.ENTREPRENEUR_IDENTIFY': ENTREPRENEUR_IDENTIFY, 'LOCATION_INFO.CTZNO_OPERATOR': CTZNO_OPERATOR }, { _id: 0 });
   } else if (CTZNO_OPERATOR.length) {
     info = await Drugstore.find({ 'LOCATION_INFO.CTZNO_OPERATOR': CTZNO_OPERATOR }, { _id: 0 });
@@ -65,6 +65,7 @@ async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
   if (info.length) {
     const data = [];
     for (const i of info) {
+      
       const locationInfo = {
         "ENTREPRENEUR_IDENTIFY": i.LOCATION_INFO.ENTREPRENEUR_IDENTIFY,
         "ENTREPRENEUR_NAME": i.LOCATION_INFO.ENTREPRENEUR_NAME,
@@ -74,7 +75,7 @@ async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
         "ADDR_NO": i.LOCATION_INFO.ADDR_NO,
         "PROVINCE": i.LOCATION_INFO.PROVINCE,
         "DISTRICT": i.LOCATION_INFO.DISTRICT,
-        "SubDISTRICT": i.LOCATION_INFO.SubDISTRICT,
+        "SUBDISTRICT": i.LOCATION_INFO.SUBDISTRICT,
         "ZIPCODE": i.LOCATION_INFO.ZIPCODE,
         "LATITUDE": i.LOCATION_INFO.LATITUDE,
         "LONGTITUDE": i.LOCATION_INFO.LONGTITUDE,
@@ -83,6 +84,9 @@ async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
         "EMAIL": i.LOCATION_INFO.EMAIL,
         "HCODE": i.LOCATION_INFO.HCODE,
         "LOCATION_JOB_TIME": i.LOCATION_INFO.LOCATION_JOB_TIME,
+        "TR_ID": i.LOCATION_INFO.TR_ID,
+        "UPDATE_DATE": i.LOCATION_INFO.UPDATE_DATE,
+        "STATUS": i.LOCATION_INFO.STATUS,
         "DATA_LINKGATE": {
           "alleyCode": i.LOCATION_INFO.DATA_LINKGATE.alleyCode,
           "alleyDesc": i.LOCATION_INFO.DATA_LINKGATE.alleyDesc,
@@ -99,6 +103,7 @@ async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
           "subdistrictCode": i.LOCATION_INFO.DATA_LINKGATE.subdistrictCode,
           "subdistrictDesc": i.LOCATION_INFO.DATA_LINKGATE.subdistrictDesc,
           "villageNo": i.LOCATION_INFO.DATA_LINKGATE.villageNo,
+          "dateOfTerminate": i.LOCATION_INFO.DATA_LINKGATE.dateOfTerminate,
         }
       };
       const locationBsn = [];

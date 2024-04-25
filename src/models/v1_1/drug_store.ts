@@ -12,7 +12,7 @@ var schemaDrugstore = new Schema({
     "ADDR_NO": String,
     "PROVINCE": String,
     "DISTRICT": String,
-    "SubDISTRICT": String,
+    "SUBDISTRICT": String,
     "ZIPCODE": String,
     "LATITUDE": String,
     "LONGTITUDE": String,
@@ -21,6 +21,10 @@ var schemaDrugstore = new Schema({
     "EMAIL": String,
     "HCODE": String,
     "LOCATION_JOB_TIME": String,
+    "TR_ID": String,
+    "UPDATE_DATE": String,
+    "STATUS": String,
+
     "DATA_LINKGATE": {
       "alleyCode": String,
       "alleyDesc": String,
@@ -37,6 +41,7 @@ var schemaDrugstore = new Schema({
       "subdistrictCode": String,
       "subdistrictDesc": String,
       "villageNo": String,
+      "dateOfTerminate": String,
     },
   },
   "LOCATION_BSN": [
