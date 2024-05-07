@@ -51,7 +51,7 @@ router.get('/', async (req: Request, res: Response) => {
 async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
   // const info: any = await Drugstore.find({ 'LOCATION_INFO.PVCODE': "65" }, { _id: 0 });
   let info: any;
-  if (ENTREPRENEUR_IDENTIFY.length && CTZNO_OPERATOR.length) {    
+  if (ENTREPRENEUR_IDENTIFY.length && CTZNO_OPERATOR.length) {
     info = await Drugstore.find({ 'LOCATION_INFO.ENTREPRENEUR_IDENTIFY': ENTREPRENEUR_IDENTIFY, 'LOCATION_INFO.CTZNO_OPERATOR': CTZNO_OPERATOR }, { _id: 0 });
   } else if (CTZNO_OPERATOR.length) {
     info = await Drugstore.find({ 'LOCATION_INFO.CTZNO_OPERATOR': CTZNO_OPERATOR }, { _id: 0 });
@@ -65,7 +65,7 @@ async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
   if (info.length) {
     const data = [];
     for (const i of info) {
-      
+
       const locationInfo = {
         "ENTREPRENEUR_IDENTIFY": i.LOCATION_INFO.ENTREPRENEUR_IDENTIFY,
         "ENTREPRENEUR_NAME": i.LOCATION_INFO.ENTREPRENEUR_NAME,
@@ -87,6 +87,8 @@ async function getInfo(key, ENTREPRENEUR_IDENTIFY = '', CTZNO_OPERATOR = '') {
         "TR_ID": i.LOCATION_INFO.TR_ID,
         "UPDATE_DATE": i.LOCATION_INFO.UPDATE_DATE,
         "STATUS": i.LOCATION_INFO.STATUS,
+        "APPROVE_DATE": i.LOCATION_INFO.APPROVE_DATE,
+        "EXPIRE_DATE": i.LOCATION_INFO.EXPIRE_DATE,
         "DATA_LINKGATE": {
           "alleyCode": i.LOCATION_INFO.DATA_LINKGATE.alleyCode,
           "alleyDesc": i.LOCATION_INFO.DATA_LINKGATE.alleyDesc,

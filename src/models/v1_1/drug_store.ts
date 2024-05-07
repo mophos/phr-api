@@ -24,7 +24,8 @@ var schemaDrugstore = new Schema({
     "TR_ID": String,
     "UPDATE_DATE": String,
     "STATUS": String,
-
+    "APPROVE_DATE": String,
+    "EXPIRE_DATE": String,
     "DATA_LINKGATE": {
       "alleyCode": String,
       "alleyDesc": String,
